@@ -1,6 +1,8 @@
 package gr.kalymnos.sk3m3l10.ichoremotetest;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ImageView bluetoothImage;
+
     private BluetoothAdapter bluetoothAdapter;
+    private BroadcastReceiver stateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,30 @@ public class MainActivity extends AppCompatActivity {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothImage = findViewById(R.id.bluetooth_image);
         toolbar = findViewById(R.id.toolBar);
+        stateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean stateChanged = intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED);
+                if (stateChanged) {
+                    int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_DISCONNECTED);
+                    if (state == BluetoothAdapter.STATE_CONNECTED) {
+                        setUiToEnabled();
+                    } else {
+                        setUiToDisabled();
+                    }
+                }
+            }
+
+            private void setUiToDisabled() {
+                getSupportActionBar().setSubtitle(R.string.bluetooth_disabled);
+                bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
+            }
+
+            private void setUiToEnabled() {
+                getSupportActionBar().setSubtitle(R.string.bluetooth_enabled);
+                bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_black_24dp);
+            }
+        };
     }
 
     private void exitIfBluetoothNotSupported() {
@@ -42,30 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableBluetooth() {
         if (!bluetoothAdapter.isEnabled()) {
-            setUiToDisabled();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        } else {
-            setUiToEnabled();
         }
-    }
-
-    private void setUiToDisabled() {
-        getSupportActionBar().setSubtitle(R.string.bluetooth_disabled);
-        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
-    }
-
-    private void setUiToEnabled() {
-        getSupportActionBar().setSubtitle(R.string.bluetooth_enabled);
-        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_black_24dp);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-            setUiToEnabled();
-        } else {
-            setUiToDisabled();
+        if (!(resultCode == RESULT_OK)) {
             Toast.makeText(this, "You have to enable bluetooth", Toast.LENGTH_SHORT).show();
             finish();
         }
