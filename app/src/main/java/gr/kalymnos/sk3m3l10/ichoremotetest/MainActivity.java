@@ -21,14 +21,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initFields();
+        setSupportActionBar(toolbar);
         exitIfBluetoothNotSupported();
         enableBluetooth();
     }
 
     private void initFields() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        toolbar = findViewById(R.id.toolBar);
         bluetoothImage = findViewById(R.id.bluetooth_image);
+        toolbar = findViewById(R.id.toolBar);
     }
 
     private void exitIfBluetoothNotSupported() {
@@ -40,12 +41,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableBluetooth() {
         if (!bluetoothAdapter.isEnabled()) {
+            setUiToDisabled();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            setUiToEnabled();
         }
+    }
+
+    private void setUiToDisabled() {
+        getActionBar().setSubtitle(R.string.bluetooth_disabled);
+        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
+    }
+
+    private void setUiToEnabled() {
+        getActionBar().setSubtitle(R.string.bluetooth_enabled);
+        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
     }
 
     public void onSendClick(View view) {
 
     }
+
+
 }

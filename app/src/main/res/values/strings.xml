@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">IchoRemoteTest</string>
+    <string name="bluetooth_disabled">Bluetooth disabled.</string>
+    <string name="bluetooth_enabled">Bluetooth enabled.</string>
 </resources>
