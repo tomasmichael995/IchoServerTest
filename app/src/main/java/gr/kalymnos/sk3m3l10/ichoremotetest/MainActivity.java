@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUiToDisabled() {
-        getActionBar().setSubtitle(R.string.bluetooth_disabled);
+        getSupportActionBar().setSubtitle(R.string.bluetooth_disabled);
         bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
     }
 
     private void setUiToEnabled() {
-        getActionBar().setSubtitle(R.string.bluetooth_enabled);
-        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_disabled_black_24dp);
+        getSupportActionBar().setSubtitle(R.string.bluetooth_enabled);
+        bluetoothImage.setBackgroundResource(R.drawable.ic_bluetooth_black_24dp);
     }
 
     @Override
@@ -74,6 +74,4 @@ public class MainActivity extends AppCompatActivity {
     public void onSendClick(View view) {
 
     }
-
-
 }
