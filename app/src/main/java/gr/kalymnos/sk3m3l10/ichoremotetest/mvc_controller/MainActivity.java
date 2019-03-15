@@ -1,4 +1,4 @@
-package gr.kalymnos.sk3m3l10.ichoremotetest;
+package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -6,23 +6,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
-import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_views.MainScreenViewMvc;
-import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_views.MainScreenViewMvcImpl;
+import gr.kalymnos.sk3m3l10.ichoremotetest.R;
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvc;
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvcImpl;
 
+import static android.bluetooth.BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE;
 import static android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED;
+import static android.bluetooth.BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION;
 import static android.bluetooth.BluetoothAdapter.EXTRA_STATE;
 import static android.bluetooth.BluetoothAdapter.STATE_OFF;
 import static android.bluetooth.BluetoothAdapter.STATE_ON;
 
 public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener {
-    private static final int REQUEST_ENABLE_BT = 13715;
     private static final String BLUETOOTH_ENABLED = "Bluetooth enabled.";
     private static final String BLUETOOTH_DISABLED = "Bluetooth disabled.";
     private static final String BLUETOOTH_CONNECTED = "Bluetooth connected.";
+    private static final int DISCOVERABLE_DURATION = 300;
+    private static final int REQUEST_DISCOVERABLE = 132;
 
     private MainScreenViewMvc viewMvc;
     private BluetoothAdapter bluetoothAdapter;
@@ -53,11 +58,9 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
 
             private void setUiFrom(int state) {
                 if (state == STATE_ON) {
-                    viewMvc.showBluetooth();
-                    viewMvc.setToolbarSubtitle(BLUETOOTH_ENABLED);
+                    displayBluetoothEnabled();
                 } else {
-                    viewMvc.showBluetoothDisabled();
-                    viewMvc.setToolbarSubtitle(BLUETOOTH_DISABLED);
+                    displayBluetoothDisabled();
                 }
             }
         };
@@ -85,25 +88,39 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
 
     private void displayBluetoothStatus() {
         if (bluetoothAdapter.isEnabled()) {
-            viewMvc.showBluetooth();
-            viewMvc.setToolbarSubtitle(BLUETOOTH_ENABLED);
+            displayBluetoothEnabled();
         } else {
-            viewMvc.showBluetoothDisabled();
-            viewMvc.setToolbarSubtitle(BLUETOOTH_DISABLED);
+            displayBluetoothDisabled();
         }
+    }
+
+    private void displayBluetoothEnabled() {
+        viewMvc.showBluetooth();
+        viewMvc.setToolbarSubtitle(BLUETOOTH_ENABLED);
+    }
+
+    private void displayBluetoothDisabled() {
+        viewMvc.showBluetoothDisabled();
+        viewMvc.setToolbarSubtitle(BLUETOOTH_DISABLED);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         registerReceiver(stateReceiver, new IntentFilter(ACTION_STATE_CHANGED));
-        if (!bluetoothAdapter.isEnabled())
-            requestBluetoothEnable();
+        requestDiscoverable();
     }
 
-    private void requestBluetoothEnable() {
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    private void requestDiscoverable() {
+        Intent intent = new Intent(ACTION_REQUEST_DISCOVERABLE);
+        intent.putExtra(EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
+        startActivityForResult(intent, REQUEST_DISCOVERABLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_CANCELED)
+            finish();
     }
 
     @Override

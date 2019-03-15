@@ -1,4 +1,4 @@
-package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_views;
+package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view;
 
 import android.view.View;
 
