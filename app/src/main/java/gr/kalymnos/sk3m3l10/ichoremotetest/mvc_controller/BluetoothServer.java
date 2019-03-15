@@ -40,6 +40,7 @@ public class BluetoothServer extends Thread {
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
+                connectionListener.onConnectionError();
             }
         }
     }
