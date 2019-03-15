@@ -19,6 +19,9 @@ import static android.bluetooth.BluetoothAdapter.STATE_ON;
 
 public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener {
     private static final int REQUEST_ENABLE_BT = 13715;
+    private static final String BLUETOOTH_ENABLED = "Bluetooth enabled.";
+    private static final String BLUETOOTH_DISABLED = "Bluetooth disabled.";
+    private static final String BLUETOOTH_CONNECTED = "Bluetooth connected.";
 
     private MainScreenViewMvc viewMvc;
     private BluetoothAdapter bluetoothAdapter;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initFields();
+        exitIfBluetoothUnsupported();
         setupUi();
     }
 
@@ -49,10 +53,10 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
             private void setUiFrom(int state) {
                 if (state == STATE_ON) {
                     viewMvc.showBluetooth();
-                    viewMvc.setToolbarSubtitle("Bluetooth enabled.");
+                    viewMvc.setToolbarSubtitle(BLUETOOTH_ENABLED);
                 } else {
                     viewMvc.showBluetoothDisabled();
-                    viewMvc.setToolbarSubtitle("Bluetooth disabled.");
+                    viewMvc.setToolbarSubtitle(BLUETOOTH_DISABLED);
                 }
             }
         };
@@ -64,10 +68,33 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
         viewMvc.setOnSendClickListener(this);
     }
 
+    private void exitIfBluetoothUnsupported() {
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
     private void setupUi() {
         setContentView(viewMvc.getRootView());
         setSupportActionBar(viewMvc.getToolbar());
         viewMvc.setToolbarTitle(getString(R.string.app_name));
+        displayBluetoothStatus();
+    }
+
+    private void displayBluetoothStatus() {
+        if (bluetoothAdapter.isEnabled()) {
+            viewMvc.showBluetooth();
+            viewMvc.setToolbarSubtitle(BLUETOOTH_ENABLED);
+        } else {
+            viewMvc.showBluetoothDisabled();
+            viewMvc.setToolbarSubtitle(BLUETOOTH_DISABLED);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
