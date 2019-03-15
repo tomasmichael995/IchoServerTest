@@ -6,12 +6,11 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class BluetoothServer extends Thread implements BluetoothServerConnection.OnClientDisconnectionListener{
+public class BluetoothServer extends Thread implements BluetoothServerConnection.OnClientDisconnectionListener {
     private static final String TAG = "BluetoothServer";
     public static String UUID = "390f542b-629b-4076-b874-a690f781c894";
 
     private BluetoothServerSocket serverSocket;
-    private BluetoothSocket socket;
     private BluetoothConnectionListener connectionListener;
     private BluetoothServerConnection serverConnection;
 
@@ -46,6 +45,7 @@ public class BluetoothServer extends Thread implements BluetoothServerConnection
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
                 connectionListener.onConnectionError();
+                break;
             }
         }
     }
@@ -63,5 +63,9 @@ public class BluetoothServer extends Thread implements BluetoothServerConnection
     @Override
     public void onClientDisconnectionError() {
         connectionListener.onDisconnectionError();
+    }
+
+    public void send(String message) {
+        serverConnection.send(message);
     }
 }
