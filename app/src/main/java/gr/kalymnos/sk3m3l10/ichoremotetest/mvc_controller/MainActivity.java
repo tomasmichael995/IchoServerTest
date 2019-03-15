@@ -8,10 +8,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.UUID;
+
+import gr.kalymnos.sk3m3l10.ichoremotetest.BuildConfig;
 import gr.kalymnos.sk3m3l10.ichoremotetest.R;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvc;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvcImpl;
@@ -24,7 +29,8 @@ import static android.bluetooth.BluetoothAdapter.STATE_OFF;
 import static android.bluetooth.BluetoothAdapter.STATE_ON;
 
 public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener,
-        BluetoothServer.BluetoothClientConnectionListener {
+        BluetoothServer.BluetoothConnectionListener {
+    private static final String TAG = "MainActivity";
     private static final String BLUETOOTH_ENABLED = "Bluetooth enabled.";
     private static final String BLUETOOTH_DISABLED = "Bluetooth disabled.";
     private static final String BLUETOOTH_CONNECTED = "Bluetooth connected.";
@@ -32,8 +38,9 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     private static final int REQUEST_DISCOVERABLE = 132;
 
     private MainScreenViewMvc viewMvc;
-    private BluetoothAdapter bluetoothAdapter;
     private BroadcastReceiver stateReceiver;
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothServer server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +128,23 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_CANCELED)
+        if (resultCode == DISCOVERABLE_DURATION) {
+            initServer();
+            server.start();
+        } else if (resultCode == RESULT_CANCELED) {
             finish();
+        }
+    }
+
+    private void initServer() {
+        try {
+            String name = BuildConfig.APPLICATION_ID;
+            UUID uuid = UUID.fromString(BluetoothServer.UUID);
+            server = new BluetoothServer(bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(name, uuid));
+            server.setConnectionListener(this);
+        } catch (IOException e) {
+            Log.d(TAG, "Error creating server " + e.getMessage());
+        }
     }
 
     @Override
@@ -137,17 +159,17 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     }
 
     @Override
-    public void onClientConnection() {
-        Toast.makeText(this, "Connected with a device!", Toast.LENGTH_SHORT).show();
+    public void onConnection() {
+        Toast.makeText(this, BLUETOOTH_CONNECTED, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onClientDisconnection() {
-        Toast.makeText(this, "Client disconnected!", Toast.LENGTH_SHORT).show();
+    public void onDisconnection() {
+        Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onClientConnectionError() {
+    public void onConnectionError() {
         Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
     }
 
