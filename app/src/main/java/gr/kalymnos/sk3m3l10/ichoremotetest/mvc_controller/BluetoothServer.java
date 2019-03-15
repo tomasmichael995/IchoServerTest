@@ -11,20 +11,22 @@ public class BluetoothServer extends Thread {
     public static String UUID = "390f542b-629b-4076-b874-a690f781c894";
 
     private BluetoothServerSocket serverSocket;
-    private BluetoothConnectionListener connectionListener;
+    private BluetoothClientConnectionListener connectionListener;
     private BluetoothServerConnection serverConnection;
 
-    public interface BluetoothConnectionListener {
-        void onConnected();
+    public interface BluetoothClientConnectionListener {
+        void onClientConnection();
 
-        void onConnectionError();
+        void onClientDisconnection();
+
+        void onClientConnectionError();
     }
 
     public BluetoothServer(BluetoothServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
-    public void setConnectionListener(BluetoothConnectionListener listener) {
+    public void setConnectionListener(BluetoothClientConnectionListener listener) {
         connectionListener = listener;
     }
 
@@ -40,7 +42,7 @@ public class BluetoothServer extends Thread {
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
-                connectionListener.onConnectionError();
+                connectionListener.onClientConnectionError();
             }
         }
     }
@@ -48,6 +50,6 @@ public class BluetoothServer extends Thread {
     private void startConnection(BluetoothSocket socket) {
         serverConnection = new BluetoothServerConnection(socket);
         serverConnection.start();
-        connectionListener.onConnected();
+        connectionListener.onClientConnection();
     }
 }

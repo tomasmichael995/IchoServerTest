@@ -22,7 +22,8 @@ import static android.bluetooth.BluetoothAdapter.EXTRA_STATE;
 import static android.bluetooth.BluetoothAdapter.STATE_OFF;
 import static android.bluetooth.BluetoothAdapter.STATE_ON;
 
-public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener {
+public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener,
+        BluetoothServer.BluetoothClientConnectionListener {
     private static final String BLUETOOTH_ENABLED = "Bluetooth enabled.";
     private static final String BLUETOOTH_DISABLED = "Bluetooth disabled.";
     private static final String BLUETOOTH_CONNECTED = "Bluetooth connected.";
@@ -132,5 +133,20 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     public void onSendClick() {
         Toast.makeText(this, "Button pressed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClientConnection() {
+        Toast.makeText(this, "Connected with a device!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClientDisconnection() {
+        Toast.makeText(this, "Client disconnected!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClientConnectionError() {
+        Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
     }
 }
