@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import gr.kalymnos.sk3m3l10.ichoremotetest.R;
 
@@ -13,6 +14,7 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     private View rootView;
     private Toolbar toolbar;
     private FloatingActionButton sendButton;
+    private TextView macAddressTxt;
     private ImageView bluetoothImage;
 
     public MainScreenViewMvcImpl(LayoutInflater inflater, ViewGroup container) {
@@ -24,6 +26,7 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
         toolbar = rootView.findViewById(R.id.toolBar);
         sendButton = rootView.findViewById(R.id.send);
         bluetoothImage = rootView.findViewById(R.id.bluetooth_image);
+        macAddressTxt = rootView.findViewById(R.id.mac_address);
     }
 
     @Override
@@ -47,6 +50,11 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     @Override
     public void showBluetoothConnected() {
         bluetoothImage.setImageResource(R.drawable.ic_bluetooth_connected_black_24dp);
+    }
+
+    @Override
+    public void bindMacAddress(String address) {
+        macAddressTxt.setText(address);
     }
 
     @Override

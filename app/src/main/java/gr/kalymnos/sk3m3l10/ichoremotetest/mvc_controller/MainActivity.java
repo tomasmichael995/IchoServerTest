@@ -16,6 +16,8 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.UUID;
 
+import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.BluetoothServer;
+import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.BluetoothUtils;
 import gr.kalymnos.sk3m3l10.ichoremotetest.BuildConfig;
 import gr.kalymnos.sk3m3l10.ichoremotetest.R;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvc;
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
         setContentView(viewMvc.getRootView());
         setSupportActionBar(viewMvc.getToolbar());
         viewMvc.setToolbarTitle(getString(R.string.app_name));
+        viewMvc.bindMacAddress("MAC:"+BluetoothUtils.getLocalMacAddress(this));
         displayBluetoothStatus();
     }
 
@@ -183,9 +186,9 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     }
 
     public void onSendClick(View view) {
-        if (connected){
+        if (connected) {
             server.send("Hello Lefti!");
-        }else{
+        } else {
             Toast.makeText(this, "Noone is connected with you!", Toast.LENGTH_SHORT).show();
         }
     }

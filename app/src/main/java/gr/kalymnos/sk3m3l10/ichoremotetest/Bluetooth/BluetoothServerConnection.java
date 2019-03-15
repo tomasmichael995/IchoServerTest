@@ -1,4 +1,4 @@
-package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller;
+package gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;

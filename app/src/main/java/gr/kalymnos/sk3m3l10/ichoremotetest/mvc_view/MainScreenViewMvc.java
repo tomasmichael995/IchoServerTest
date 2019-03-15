@@ -12,4 +12,6 @@ public interface MainScreenViewMvc extends ViewMvcWithToolbar {
     void showBluetoothDisabled();
 
     void showBluetoothConnected();
+
+    void bindMacAddress(String address);
 }
