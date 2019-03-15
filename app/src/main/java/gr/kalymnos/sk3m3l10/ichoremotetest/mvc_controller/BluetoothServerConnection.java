@@ -7,11 +7,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class BluetoothServerConnection extends Thread {
+public class BluetoothServerConnection {
     private static final String TAG = "BluetoothServerConnecti";
 
     private BluetoothSocket socket;
     private PrintWriter out;
+    private OnClientDisconnectionListener disconnectionListener;
+
+    public interface OnClientDisconnectionListener {
+        void onClientDisconnected();
+
+        void onClientDisconnectionError();
+    }
 
     BluetoothServerConnection(BluetoothSocket socket) {
         initFields(socket);
@@ -31,17 +38,22 @@ public class BluetoothServerConnection extends Thread {
         }
     }
 
-    @Override
-    public void run() {
-        out.println("Hello Icho!");
-        closeSocket();
+    public void setDisconnectionListener(OnClientDisconnectionListener listener) {
+        disconnectionListener = listener;
     }
 
-    private void closeSocket() {
+    public void send(String message) {
+        out.println(message);
+    }
+
+    private void disconnect() {
         try {
+            out.close();
             socket.close();
+            disconnectionListener.onClientDisconnected();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Error while closing outputStream or Socket " + e.getMessage());
+            disconnectionListener.onClientDisconnectionError();
         }
     }
 }
