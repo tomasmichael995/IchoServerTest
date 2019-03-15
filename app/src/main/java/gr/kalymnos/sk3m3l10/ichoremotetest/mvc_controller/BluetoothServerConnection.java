@@ -5,13 +5,12 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 public class BluetoothServerConnection {
     private static final String TAG = "BluetoothServerConnecti";
 
     private BluetoothSocket socket;
-    private PrintWriter out;
+    private OutputStream out;
     private OnClientDisconnectionListener disconnectionListener;
 
     public interface OnClientDisconnectionListener {
@@ -26,7 +25,7 @@ public class BluetoothServerConnection {
 
     private void initFields(BluetoothSocket socket) {
         this.socket = socket;
-        out = new PrintWriter(getOutputStreamFrom(socket), true);
+        out = getOutputStreamFrom(socket);
     }
 
     private OutputStream getOutputStreamFrom(BluetoothSocket socket) {
@@ -43,7 +42,13 @@ public class BluetoothServerConnection {
     }
 
     public void send(String message) {
-        out.println(message);
+        byte[] data = message.getBytes();
+        try {
+            out.write(data);
+        } catch (IOException e) {
+            Log.d(TAG, "OutputStream#write() might be closed: " + e.getMessage());
+            disconnect();
+        }
     }
 
     private void disconnect() {
