@@ -97,6 +97,13 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     protected void onStart() {
         super.onStart();
         registerReceiver(stateReceiver, new IntentFilter(ACTION_STATE_CHANGED));
+        if (!bluetoothAdapter.isEnabled())
+            requestBluetoothEnable();
+    }
+
+    private void requestBluetoothEnable() {
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
 
     @Override
