@@ -173,6 +173,11 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
         Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDisconnectionError() {
+        Toast.makeText(this, "There was a disconnection error", Toast.LENGTH_SHORT).show();
+    }
+
     public void onSendClick(View view) {
 
     }

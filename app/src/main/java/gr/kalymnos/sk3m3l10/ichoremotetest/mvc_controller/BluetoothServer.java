@@ -6,27 +6,30 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class BluetoothServer extends Thread {
+public class BluetoothServer extends Thread implements BluetoothServerConnection.OnClientDisconnectionListener{
     private static final String TAG = "BluetoothServer";
     public static String UUID = "390f542b-629b-4076-b874-a690f781c894";
 
     private BluetoothServerSocket serverSocket;
-    private BluetoothClientConnectionListener connectionListener;
+    private BluetoothSocket socket;
+    private BluetoothConnectionListener connectionListener;
     private BluetoothServerConnection serverConnection;
 
-    public interface BluetoothClientConnectionListener {
-        void onClientConnection();
+    public interface BluetoothConnectionListener {
+        void onConnection();
 
-        void onClientDisconnection();
+        void onDisconnection();
 
-        void onClientConnectionError();
+        void onConnectionError();
+
+        void onDisconnectionError();
     }
 
     public BluetoothServer(BluetoothServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
-    public void setConnectionListener(BluetoothClientConnectionListener listener) {
+    public void setConnectionListener(BluetoothConnectionListener listener) {
         connectionListener = listener;
     }
 
@@ -42,14 +45,23 @@ public class BluetoothServer extends Thread {
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
-                connectionListener.onClientConnectionError();
+                connectionListener.onConnectionError();
             }
         }
     }
 
     private void startConnection(BluetoothSocket socket) {
         serverConnection = new BluetoothServerConnection(socket);
-        serverConnection.start();
-        connectionListener.onClientConnection();
+        connectionListener.onConnection();
+    }
+
+    @Override
+    public void onClientDisconnected() {
+        connectionListener.onDisconnection();
+    }
+
+    @Override
+    public void onClientDisconnectionError() {
+        connectionListener.onDisconnectionError();
     }
 }
