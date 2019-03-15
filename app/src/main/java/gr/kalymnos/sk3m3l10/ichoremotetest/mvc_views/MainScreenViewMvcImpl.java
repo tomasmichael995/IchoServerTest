@@ -35,17 +35,17 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     }
 
     @Override
-    public void displayBluetoothImg() {
+    public void showBluetooth() {
         bluetoothImage.setImageResource(R.drawable.ic_bluetooth_black_24dp);
     }
 
     @Override
-    public void displaBluetoothDisabledImg() {
+    public void showBluetoothDisabled() {
         bluetoothImage.setImageResource(R.drawable.ic_bluetooth_disabled_black_24dp);
     }
 
     @Override
-    public void displaBluetoothConnectedImg() {
+    public void showBluetoothConnected() {
         bluetoothImage.setImageResource(R.drawable.ic_bluetooth_connected_black_24dp);
     }
 

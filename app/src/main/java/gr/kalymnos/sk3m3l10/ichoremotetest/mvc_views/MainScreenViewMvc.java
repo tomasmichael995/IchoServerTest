@@ -7,9 +7,9 @@ public interface MainScreenViewMvc extends ViewMvcWithToolbar {
 
     void setOnSendClickListener(OnSendClickListener listener);
 
-    void displayBluetoothImg();
+    void showBluetooth();
 
-    void displaBluetoothDisabledImg();
+    void showBluetoothDisabled();
 
-    void displaBluetoothConnectedImg();
+    void showBluetoothConnected();
 }
