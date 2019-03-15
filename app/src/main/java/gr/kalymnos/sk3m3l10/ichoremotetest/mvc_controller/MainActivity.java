@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     private BroadcastReceiver stateReceiver;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothServer server;
+    private boolean connected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,16 +162,19 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     public void onConnection() {
         Toast.makeText(this, BLUETOOTH_CONNECTED, Toast.LENGTH_SHORT).show();
+        connected = true;
     }
 
     @Override
     public void onDisconnection() {
         Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
+        connected = false;
     }
 
     @Override
     public void onConnectionError() {
         Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
+        connected = false;
     }
 
     @Override
@@ -179,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     }
 
     public void onSendClick(View view) {
-
+        if (connected){
+            server.send("Hello Lefti!");
+        }else{
+            Toast.makeText(this, "Noone is connected with you!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
