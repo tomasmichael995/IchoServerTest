@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -95,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     protected void onStart() {
         super.onStart();
+        registerReceiver(stateReceiver, new IntentFilter(ACTION_STATE_CHANGED));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(stateReceiver);
     }
 
     @Override
