@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import gr.kalymnos.sk3m3l10.ichoremotetest.R;
@@ -148,5 +149,9 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     public void onClientConnectionError() {
         Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onSendClick(View view) {
+
     }
 }
