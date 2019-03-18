@@ -19,48 +19,72 @@
 
     <TextView
         android:id="@+id/mac_address"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/bluetooth_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bluetooth_image"
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_image"
         tools:text="MAC: 13:31:13:13:13:34" />
 
     <ImageView
         android:id="@+id/bluetooth_image"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_bluetooth_disabled_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.587"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+
+    <TextView
+        android:id="@+id/message_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Message"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_bluetooth_disabled_black_24dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Type your message here..."
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_image"
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:onClick="onSendClick"
         android:src="@drawable/ic_send_black_40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

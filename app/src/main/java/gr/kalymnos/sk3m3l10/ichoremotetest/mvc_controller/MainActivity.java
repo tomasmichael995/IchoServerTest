@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
 
     private void initFields() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        initStateReceiver();
+        initViewMvc();
+    }
+
+    private void initStateReceiver() {
         stateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -76,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
                 }
             }
         };
-        initViewMvc();
     }
 
     private void initViewMvc() {
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
         setContentView(viewMvc.getRootView());
         setSupportActionBar(viewMvc.getToolbar());
         viewMvc.setToolbarTitle(getString(R.string.app_name));
-        viewMvc.bindMacAddress("MAC:"+BluetoothUtils.getLocalMacAddress(this));
+        viewMvc.bindMacAddress("MAC:" + BluetoothUtils.localMacAddress(this));
         displayBluetoothStatus();
     }
 

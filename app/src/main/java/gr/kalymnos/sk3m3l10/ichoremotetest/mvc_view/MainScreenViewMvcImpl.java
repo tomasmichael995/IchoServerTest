@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     private FloatingActionButton sendButton;
     private TextView macAddressTxt;
     private ImageView bluetoothImage;
+    private EditText message;
 
     public MainScreenViewMvcImpl(LayoutInflater inflater, ViewGroup container) {
         initViews(inflater, container);
@@ -27,6 +29,7 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
         sendButton = rootView.findViewById(R.id.send);
         bluetoothImage = rootView.findViewById(R.id.bluetooth_image);
         macAddressTxt = rootView.findViewById(R.id.mac_address);
+        message = rootView.findViewById(R.id.message);
     }
 
     @Override
@@ -55,6 +58,11 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     @Override
     public void bindMacAddress(String address) {
         macAddressTxt.setText(address);
+    }
+
+    @Override
+    public String getMessage() {
+        return message.getText().toString();
     }
 
     @Override
