@@ -8,17 +8,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.UUID;
-
 import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.BluetoothServer;
 import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.BluetoothUtils;
-import gr.kalymnos.sk3m3l10.ichoremotetest.BuildConfig;
 import gr.kalymnos.sk3m3l10.ichoremotetest.R;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvc;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvcImpl;
@@ -137,21 +132,10 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == DISCOVERABLE_DURATION) {
-            initServer();
+            server = BluetoothServer.Factory.createInstance(this);
             server.start();
         } else if (resultCode == RESULT_CANCELED) {
             finish();
-        }
-    }
-
-    private void initServer() {
-        try {
-            String name = BuildConfig.APPLICATION_ID;
-            UUID uuid = UUID.fromString(BluetoothServer.UUID);
-            server = new BluetoothServer(bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(name, uuid));
-            server.setConnectionListener(this);
-        } catch (IOException e) {
-            Log.d(TAG, "Error creating server " + e.getMessage());
         }
     }
 
