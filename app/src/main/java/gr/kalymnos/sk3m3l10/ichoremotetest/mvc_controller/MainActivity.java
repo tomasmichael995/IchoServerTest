@@ -149,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     public void onSendClick() {
         if (server != null) {
-
+            String msg = viewMvc.getMessage();
+            server.send(msg);
         }
     }
 }
