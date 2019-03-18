@@ -16,4 +16,12 @@ public interface MainScreenViewMvc extends ViewMvcWithToolbar {
     void bindMacAddress(String address);
 
     String getMessage();
+
+    void setStatusConnected();
+
+    void setStatusDisconnected();
+
+    void setServerStatusUp();
+
+    void setServerStatusDown();
 }

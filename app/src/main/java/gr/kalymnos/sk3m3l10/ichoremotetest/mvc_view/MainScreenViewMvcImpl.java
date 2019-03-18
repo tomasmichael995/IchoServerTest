@@ -15,7 +15,7 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     private View rootView;
     private Toolbar toolbar;
     private FloatingActionButton sendButton;
-    private TextView macAddressTxt;
+    private TextView macAddressTxt, connectionStatus, serverStatus;
     private ImageView bluetoothImage;
     private EditText message;
 
@@ -30,6 +30,8 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
         bluetoothImage = rootView.findViewById(R.id.bluetooth_image);
         macAddressTxt = rootView.findViewById(R.id.mac_address);
         message = rootView.findViewById(R.id.message);
+        connectionStatus = rootView.findViewById(R.id.connection_status);
+        serverStatus = rootView.findViewById(R.id.server_status);
     }
 
     @Override
@@ -63,6 +65,26 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     @Override
     public String getMessage() {
         return message.getText().toString();
+    }
+
+    @Override
+    public void setStatusConnected() {
+        connectionStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_upward_black_24dp, 0);
+    }
+
+    @Override
+    public void setStatusDisconnected() {
+        connectionStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_downward_black_24dp, 0);
+    }
+
+    @Override
+    public void setServerStatusUp() {
+        serverStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_upward_black_24dp, 0);
+    }
+
+    @Override
+    public void setServerStatusDown() {
+        serverStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_downward_black_24dp, 0);
     }
 
     @Override
