@@ -55,6 +55,12 @@ public class BluetoothServer extends Thread {
             serverConnection.send(message);
     }
 
+    public void disconnect(){
+        if (serverConnection!=null){
+            serverConnection.disconnect();
+        }
+    }
+
     public static class Factory {
         public static BluetoothServer createInstance(Handler handler) {
             BluetoothServerSocket serverSocket = createServerSocket();

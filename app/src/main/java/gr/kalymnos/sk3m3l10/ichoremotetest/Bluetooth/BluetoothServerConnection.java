@@ -54,7 +54,7 @@ public class BluetoothServerConnection {
         }
     }
 
-    private void disconnect() {
+    public void disconnect() {
         try {
             out.close();
             socket.close();

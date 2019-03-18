@@ -143,10 +143,13 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     protected void onStop() {
         super.onStop();
         unregisterReceiver(stateReceiver);
+        server.disconnect();
     }
 
     @Override
     public void onSendClick() {
-        Toast.makeText(this, "Button pressed", Toast.LENGTH_SHORT).show();
+        if (server != null) {
+
+        }
     }
 }
