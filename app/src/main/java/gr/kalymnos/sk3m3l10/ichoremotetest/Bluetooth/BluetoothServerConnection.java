@@ -8,7 +8,9 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus;
+import static gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus.CONNECTED;
+import static gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus.DISSCONNECTED;
+import static gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus.ERROR;
 
 public class BluetoothServerConnection {
     private static final String TAG = "BluetoothServerConnecti";
@@ -35,9 +37,9 @@ public class BluetoothServerConnection {
 
     private void reportStatusFromOutputStream() {
         if (out != null) {
-            report(ConnectionStatus.CONNECTED);
+            report(CONNECTED);
         } else {
-            report(ConnectionStatus.ERROR);
+            report(ERROR);
         }
     }
 
@@ -53,6 +55,7 @@ public class BluetoothServerConnection {
             out.write(data);
         } catch (IOException e) {
             Log.d(TAG, "OutputStream#write() might be closed: " + e.getMessage());
+            disconnect();
         }
     }
 
@@ -60,7 +63,7 @@ public class BluetoothServerConnection {
         try {
             out.close();
             socket.close();
-            report(ConnectionStatus.DISSCONNECTED);
+            report(DISSCONNECTED);
         } catch (IOException e) {
             Log.d(TAG, "Error while closing outputStream or Socket " + e.getMessage());
         }

@@ -3,6 +3,7 @@ package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ServerStatus;
@@ -35,6 +36,7 @@ public class MainHandler extends Handler {
                 break;
             case ConnectionStatus.DISSCONNECTED:
                 viewMvc.setConnectionStatusToDisconnected();
+                Snackbar.make(viewMvc.getRootView(), "Disconnected", Snackbar.LENGTH_SHORT).show();
                 break;
             case ConnectionStatus.ERROR:
                 viewMvc.setConnectionStatusToError();
