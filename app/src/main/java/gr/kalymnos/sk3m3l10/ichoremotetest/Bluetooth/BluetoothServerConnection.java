@@ -15,10 +15,11 @@ public class BluetoothServerConnection {
     private BluetoothSocket socket;
     private OutputStream out;
 
-    BluetoothServerConnection(BluetoothSocket socket, android.os.Handler handler) {
+    BluetoothServerConnection(BluetoothSocket socket, Handler handler) {
         this.socket = socket;
         this.handler = handler;
         out = getOutputStreamFrom(socket);
+        reportStatusFromOutputStream();
     }
 
     private OutputStream getOutputStreamFrom(BluetoothSocket socket) {
@@ -26,9 +27,22 @@ public class BluetoothServerConnection {
             return socket.getOutputStream();
         } catch (IOException e) {
             Log.e(TAG, "Error obtaining outStream from socket", e);
-            sendErrorMessageTo(handler);
             return null;
         }
+    }
+
+    private void reportStatusFromOutputStream() {
+        if (out != null) {
+            report(ConnectionStatus.CONNECTED);
+        } else {
+            report(ConnectionStatus.ERROR);
+        }
+    }
+
+    private void report(int status) {
+        Message msg = handler.obtainMessage();
+        msg.what = status;
+        msg.sendToTarget();
     }
 
     public void send(String message) {
@@ -37,7 +51,6 @@ public class BluetoothServerConnection {
             out.write(data);
         } catch (IOException e) {
             Log.d(TAG, "OutputStream#write() might be closed: " + e.getMessage());
-            disconnect();
         }
     }
 
@@ -45,14 +58,9 @@ public class BluetoothServerConnection {
         try {
             out.close();
             socket.close();
+            report(ConnectionStatus.DISSCONNECTED);
         } catch (IOException e) {
             Log.d(TAG, "Error while closing outputStream or Socket " + e.getMessage());
         }
-    }
-
-    private static void sendErrorMessageTo(Handler handler) {
-        Message msg = handler.obtainMessage();
-        msg.what = ConnectionStatus.ERROR;
-        msg.sendToTarget();
     }
 }
