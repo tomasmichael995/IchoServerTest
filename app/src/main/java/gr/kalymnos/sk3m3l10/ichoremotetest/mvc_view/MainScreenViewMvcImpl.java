@@ -68,23 +68,33 @@ public class MainScreenViewMvcImpl implements MainScreenViewMvc {
     }
 
     @Override
-    public void setStatusConnected() {
+    public void setConnectionStatusToConnected() {
         connectionStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_upward_black_24dp, 0);
     }
 
     @Override
-    public void setStatusDisconnected() {
+    public void setConnectionStatusToDisconnected() {
         connectionStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_downward_black_24dp, 0);
     }
 
     @Override
-    public void setServerStatusUp() {
+    public void setConnectionStatusToError() {
+        connectionStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error_outline_black_24dp, 0);
+    }
+
+    @Override
+    public void setServerStatusToUp() {
         serverStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_upward_black_24dp, 0);
     }
 
     @Override
-    public void setServerStatusDown() {
+    public void setServerStatusToDown() {
         serverStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_downward_black_24dp, 0);
+    }
+
+    @Override
+    public void setServerStatusToError() {
+        serverStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error_outline_black_24dp, 0);
     }
 
     @Override

@@ -22,9 +22,10 @@ public class MainHandler extends Handler {
     public void handleMessage(Message msg) {
         switch (msg.what) {
             case ServerStatus.UP:
-                viewMvc.setServerStatusUp();
+                viewMvc.setServerStatusToUp();
                 break;
             case ServerStatus.DOWN:
+                viewMvc.setServerStatusToDown();
                 break;
             case ServerStatus.ERROR:
                 break;

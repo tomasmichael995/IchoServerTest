@@ -17,11 +17,15 @@ public interface MainScreenViewMvc extends ViewMvcWithToolbar {
 
     String getMessage();
 
-    void setStatusConnected();
+    void setConnectionStatusToConnected();
 
-    void setStatusDisconnected();
+    void setConnectionStatusToDisconnected();
 
-    void setServerStatusUp();
+    void setConnectionStatusToError();
 
-    void setServerStatusDown();
+    void setServerStatusToUp();
+
+    void setServerStatusToDown();
+
+    void setServerStatusToError();
 }
