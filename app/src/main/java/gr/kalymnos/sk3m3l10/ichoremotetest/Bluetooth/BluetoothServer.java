@@ -29,17 +29,25 @@ public class BluetoothServer extends Thread {
     public void run() {
         while (true) {
             try {
+                report(ServerStatus.UP);
                 BluetoothSocket socket = serverSocket.accept();
                 if (socket != null) {
                     serverConnection = new BluetoothServerConnection(socket, handler);
                     serverSocket.close();
+                    report(ServerStatus.DOWN);
                     break;
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
-                sendErrorMessageTo(handler);
+                report(ServerStatus.ERROR);
             }
         }
+    }
+
+    private void report(int status) {
+        Message msg = handler.obtainMessage();
+        msg.what = status;
+        msg.sendToTarget();
     }
 
     public void send(String message) {
@@ -63,11 +71,5 @@ public class BluetoothServer extends Thread {
                 return null;
             }
         }
-    }
-
-    private static void sendErrorMessageTo(Handler handler) {
-        Message msg = handler.obtainMessage();
-        msg.what = ServerStatus.ERROR;
-        msg.sendToTarget();
     }
 }
