@@ -2,6 +2,7 @@ package gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth;
 
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class BluetoothServerConnection {
             return socket.getOutputStream();
         } catch (IOException e) {
             Log.e(TAG, "Error obtaining outStream from socket", e);
+            sendErrorMessageTo(handler);
             return null;
         }
     }
@@ -46,5 +48,11 @@ public class BluetoothServerConnection {
         } catch (IOException e) {
             Log.d(TAG, "Error while closing outputStream or Socket " + e.getMessage());
         }
+    }
+
+    private static void sendErrorMessageTo(Handler handler) {
+        Message msg = handler.obtainMessage();
+        msg.what = ConnectionStatus.ERROR;
+        msg.sendToTarget();
     }
 }

@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -30,23 +31,20 @@ public class BluetoothServer extends Thread {
             try {
                 BluetoothSocket socket = serverSocket.accept();
                 if (socket != null) {
-                    startConnection(socket);
+                    serverConnection = new BluetoothServerConnection(socket, handler);
                     serverSocket.close();
                     break;
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error obtaining or closing socket " + e.getMessage());
-                break;
+                sendErrorMessageTo(handler);
             }
         }
     }
 
-    private void startConnection(BluetoothSocket socket) {
-        serverConnection = new BluetoothServerConnection(socket, handler);
-    }
-
     public void send(String message) {
-        serverConnection.send(message);
+        if (serverConnection != null)
+            serverConnection.send(message);
     }
 
     public static class Factory {
@@ -65,5 +63,11 @@ public class BluetoothServer extends Thread {
                 return null;
             }
         }
+    }
+
+    private static void sendErrorMessageTo(Handler handler) {
+        Message msg = handler.obtainMessage();
+        msg.what = ServerStatus.ERROR;
+        msg.sendToTarget();
     }
 }
