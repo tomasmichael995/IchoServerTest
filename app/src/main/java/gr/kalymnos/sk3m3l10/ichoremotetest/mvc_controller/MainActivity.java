@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.BluetoothServer;
@@ -25,8 +24,7 @@ import static android.bluetooth.BluetoothAdapter.EXTRA_STATE;
 import static android.bluetooth.BluetoothAdapter.STATE_OFF;
 import static android.bluetooth.BluetoothAdapter.STATE_ON;
 
-public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener,
-        BluetoothServer.BluetoothConnectionListener {
+public class MainActivity extends AppCompatActivity implements MainScreenViewMvc.OnSendClickListener {
     private static final String TAG = "MainActivity";
     private static final String BLUETOOTH_ENABLED = "Bluetooth enabled.";
     private static final String BLUETOOTH_DISABLED = "Bluetooth disabled.";
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == DISCOVERABLE_DURATION) {
-            server = BluetoothServer.Factory.createInstance(this);
+            server = BluetoothServer.Factory.createInstance(null);
             server.start();
         } else if (resultCode == RESULT_CANCELED) {
             finish();
@@ -148,36 +146,5 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     public void onSendClick() {
         Toast.makeText(this, "Button pressed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onConnection() {
-        Toast.makeText(this, BLUETOOTH_CONNECTED, Toast.LENGTH_SHORT).show();
-        connected = true;
-    }
-
-    @Override
-    public void onDisconnection() {
-        Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
-        connected = false;
-    }
-
-    @Override
-    public void onConnectionError() {
-        Toast.makeText(this, "There was a connection error.", Toast.LENGTH_SHORT).show();
-        connected = false;
-    }
-
-    @Override
-    public void onDisconnectionError() {
-        Toast.makeText(this, "There was a disconnection error", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onSendClick(View view) {
-        if (connected) {
-            server.send("Hello Lefti!");
-        } else {
-            Toast.makeText(this, "Noone is connected with you!", Toast.LENGTH_SHORT).show();
-        }
     }
 }
