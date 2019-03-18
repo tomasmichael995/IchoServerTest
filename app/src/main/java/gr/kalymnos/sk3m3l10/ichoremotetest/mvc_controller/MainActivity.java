@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     private BroadcastReceiver stateReceiver;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothServer server;
-    private boolean connected;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         initStateReceiver();
         initViewMvc();
+        handler = new MainHandler(viewMvc);
     }
 
     private void initStateReceiver() {
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == DISCOVERABLE_DURATION) {
-            server = BluetoothServer.Factory.createInstance(null);
+            server = BluetoothServer.Factory.createInstance(handler);
             server.start();
         } else if (resultCode == RESULT_CANCELED) {
             finish();
