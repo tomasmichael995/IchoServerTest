@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import gr.kalymnos.sk3m3l10.ichoremotetest.BuildConfig;
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ServerStatus;
 
 public class BluetoothServer extends Thread {
     private static final String TAG = "BluetoothServer";

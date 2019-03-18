@@ -1,4 +1,4 @@
-package gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth;
+package gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status;
 
 public final class ServerStatus {
 

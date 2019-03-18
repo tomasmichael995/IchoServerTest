@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.ConnectionStatus;
-import gr.kalymnos.sk3m3l10.ichoremotetest.Bluetooth.ServerStatus;
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus;
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ServerStatus;
 import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_view.MainScreenViewMvc;
 
 public class MainHandler extends Handler {

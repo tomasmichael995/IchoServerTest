@@ -8,6 +8,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import gr.kalymnos.sk3m3l10.ichoremotetest.mvc_controller.status.ConnectionStatus;
+
 public class BluetoothServerConnection {
     private static final String TAG = "BluetoothServerConnecti";
 

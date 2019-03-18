@@ -143,7 +143,10 @@ public class MainActivity extends AppCompatActivity implements MainScreenViewMvc
     protected void onStop() {
         super.onStop();
         unregisterReceiver(stateReceiver);
-        server.disconnect();
+        if (server != null) {
+            server.disconnect();
+            server = null;
+        }
     }
 
     @Override
