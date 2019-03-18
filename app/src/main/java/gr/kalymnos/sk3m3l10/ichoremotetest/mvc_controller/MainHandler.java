@@ -28,12 +28,16 @@ public class MainHandler extends Handler {
                 viewMvc.setServerStatusToDown();
                 break;
             case ServerStatus.ERROR:
+                viewMvc.setServerStatusToError();
                 break;
             case ConnectionStatus.CONNECTED:
+                viewMvc.setConnectionStatusToConnected();
                 break;
             case ConnectionStatus.DISSCONNECTED:
+                viewMvc.setConnectionStatusToDisconnected();
                 break;
             case ConnectionStatus.ERROR:
+                viewMvc.setConnectionStatusToError();
                 break;
             default:
                 throw new IllegalArgumentException(TAG + ": Unknown Message.what argument");
