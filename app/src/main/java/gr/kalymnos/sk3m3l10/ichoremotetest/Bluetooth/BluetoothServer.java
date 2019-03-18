@@ -42,7 +42,7 @@ public class BluetoothServer extends Thread {
     }
 
     private void startConnection(BluetoothSocket socket) {
-        serverConnection = new BluetoothServerConnection(socket);
+        serverConnection = new BluetoothServerConnection(socket, handler);
     }
 
     public void send(String message) {
